@@ -1,32 +1,78 @@
+/* === Monthly View === */
 .today {
-    color: red !important;
-    font-weight: bold;
+  color: red !important;
+  font-weight: bold;
 }
 .past-day {
-    color: gray;
-    opacity: 0.6;
+  color: gray;
+  opacity: 0.6;
 }
 .day-cell {
-    min-height: 80px; 
-    vertical-align: top; 
-    padding: 5px;
-    position: relative;
-    overflow: hidden;
+  min-height: 150px;
+  vertical-align: top;
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 .event-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 .event-container span {
-    display: block;
-    font-size: 12px;
-    background-color: #007bff;
-    color: white;
-    padding: 2px 4px;
-    border-radius: 3px;
-    margin-top: 2px;
-    width: 100%;
-    text-align: center;
+  display: block;
+  font-size: 12px;
+  background-color: #007bff;
+  color: white;
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin-top: 2px;
+  width: 100%;
+  text-align: center;
+}
+.hebrew-date {
+  text-align: end;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.date-number {
+text-align: start;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10%;
+}
+
+/* === Weekly view === */
+.weekly-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.day-column {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+  min-height: 100px;
+  position: relative;
+}
+.event-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 20px;
+  overflow-x: auto;
+}
+.event-card {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 150px;
+  white-space: nowrap;
 }
