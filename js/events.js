@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     new bootstrap.Modal(modalElement).show();
   }
 
-  function saveEvent() {
+  async function saveEvent() {
     let eventDate = document.getElementById("eventDate").value.trim();
     eventDate = eventDate.replace(/[^\d\-]/g, ""); 
 
@@ -70,8 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     saveEventToStorage(newEvent);
     bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();
-    window.location.reload();
-    renderCalendar();
+    await renderCalendar();
+    let confirmSync = confirm("¿Quieres agregar este evento a tu Google Calendar?");
+    if (confirmSync) {
+        addEventToGoogleCalendar(newEvent);
+    }
+    // window.location.reload();
   }
 
   // Event listener to submit the form
