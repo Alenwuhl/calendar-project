@@ -45,15 +45,19 @@
   padding: 10%;
 }
 .jag-event {
-    background-color: #ffcc00 !important;
-    color: black !important;
-    font-weight: bold;
-    padding: 5px;
-    border-radius: 5px;
-    display: block;
-    text-align: center;
+  background-color: #ffcc00 !important;
+  color: black !important;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  display: block;
+  text-align: center;
 }
-
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 /* === Weekly view === */
 .weekly-container {
@@ -71,7 +75,7 @@
   min-height: 100px;
   position: relative;
 }
-.event-container {
+.event-container-weekly {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;

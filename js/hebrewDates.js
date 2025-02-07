@@ -17,5 +17,3 @@ const HebrewDateManager = {
         return this.hebrewDates[key];
     }
 };
-
-export { HebrewDateManager };

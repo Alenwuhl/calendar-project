@@ -32,8 +32,9 @@ function exportToICal() {
 }
 
 function addEventToGoogleCalendar(event) {
-    let startDate = event.date.replace(/-/g, "") + "T" + event.time.replace(":", "") + "00Z";
-    let endDate = startDate; // 🔹 Podrías hacer que dure 1 hora sumando tiempo
+    // let startDate = event.date.replace(/-/g, "") + "T" + event.time.replace(":", "") + "00Z";
+    let startDate = event.date + "T" + event.time + ":00";
+    let endDate = startDate; 
 
     let googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE`;
     googleCalendarUrl += `&text=${encodeURIComponent(event.title)}`;
@@ -41,11 +42,11 @@ function addEventToGoogleCalendar(event) {
     googleCalendarUrl += `&details=${encodeURIComponent(event.description)}`;
     googleCalendarUrl += `&sf=true&output=xml`;
 
-    window.open(googleCalendarUrl, "_blank"); // 🔹 Abre Google Calendar en una nueva pestaña
+    window.open(googleCalendarUrl, "_blank"); 
 }
 
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("exportICal").addEventListener("click", exportToICal);
-    document.getElementById("syncGoogle").addEventListener("click", syncWithGoogleCalendar);
+    document.getElementById("syncGoogle").addEventListener("click", addEventToGoogleCalendar);
 });

@@ -70,11 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     saveEventToStorage(newEvent);
     bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();
-    await renderCalendar();
-    let confirmSync = confirm("¿Quieres agregar este evento a tu Google Calendar?");
-    if (confirmSync) {
-        addEventToGoogleCalendar(newEvent);
-    }
+    renderCalendar();
+    // let confirmSync = confirm("Do you want to add this event to your Google Calendar?");
+    // if (confirmSync) {
+    //     addEventToGoogleCalendar(newEvent);
+    // }
     // window.location.reload();
   }
 
@@ -110,8 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("click", function (e) {
     if (e.target.classList.contains("day-cell")) {
       const day = e.target.textContent.trim();
-      const month = new Date().getMonth();
-      const year = new Date().getFullYear();
+      const month = currentDate.getMonth();
+      const year = currentDate.getFullYear();
       openModal(day, month, year);
     }
   });

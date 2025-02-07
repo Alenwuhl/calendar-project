@@ -1,5 +1,3 @@
-import { HebrewDateManager } from "./hebrewDates.js";
-
 document.addEventListener("DOMContentLoaded", function () {
   const weekDaysContainer = document.getElementById("weekDays");
   const weekRangeTitle = document.getElementById("weekRange");
@@ -45,21 +43,27 @@ document.addEventListener("DOMContentLoaded", function () {
     let today = new Date();
 
     let storedEvents = getEventsFromStorage();
+    console.log("stored events: ", storedEvents);
+    
 
     for (let i = 0; i < 7; i++) {
-      let day = new Date(start);
-      day.setDate(start.getDate() + i);
-      let dayKey = `${day.getFullYear()}-${
-        day.getMonth() + 1
-      }-${day.getDate()}`;
+      let date = new Date(start);
+      date.setDate(start.getDate() + i);
+      // let dayKey = `${day.getFullYear()}-${
+      //   day.getMonth() + 1
+      // }-${day.getDay()}`;
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+      const day = String(date.getDate()).padStart(2, '0');
+      let dayKey = `${year}-${month}-${day}`;
 
       let dayColumn = document.createElement("div");
       dayColumn.classList.add("day-column");
 
       if (
-        day.getDate() === today.getDate() &&
-        day.getMonth() === today.getMonth() &&
-        day.getFullYear() === today.getFullYear()
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
       ) {
         dayColumn.classList.add("today-weekly");
       }
@@ -68,17 +72,16 @@ document.addEventListener("DOMContentLoaded", function () {
       dayHeader.classList.add("day-header");
 
       let dayTitle = document.createElement("h5");
-      dayTitle.textContent = formatDate(day);
+      dayTitle.textContent = formatDate(date);
       dayColumn.appendChild(dayTitle);
 
       let hebrewDateSpan = document.createElement("small");
       hebrewDateSpan.classList.add("hebrew-date");
       hebrewDateSpan.textContent = await HebrewDateManager.getHebrewDate(
-        day.getFullYear(),
-        day.getMonth() + 1,
-        day.getDate()
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
       );
-      console.log("date", await HebrewDateManager.getHebrewDate(2025, 2, 8));
 
       // add the title and the hebrew date to the day header
       dayHeader.appendChild(dayTitle);
@@ -87,15 +90,15 @@ document.addEventListener("DOMContentLoaded", function () {
       // add the day header to the day column
       dayColumn.appendChild(dayHeader);
 
-      let events = storedEvents[dayKey] || [];
+      let events = storedEvents.filter(event => event.date === dayKey);
       events.sort((a, b) => (a.isHoliday ? -1 : 1));
 
       let eventContainer = document.createElement("div");
-      eventContainer.classList.add("event-container");
+      eventContainer.classList.add("event-container-weekly");
 
       if (events.length === 0) {
         eventContainer.innerHTML = "<p style='color:gray;'>No events</p>";
-      }
+      } 
 
       events.forEach((event) => {
         let eventCard = document.createElement("div");
@@ -105,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       dayColumn.appendChild(eventContainer);
+      console.log("dayColumn: ", dayColumn);
+      console.log("eventContainer: ", eventContainer);
       weekDaysContainer.appendChild(dayColumn);
     }
   }
