@@ -19,19 +19,23 @@ function getEventsFromStorage() {
 
 // Save event to local storage
 function saveEventToStorage(event) {
+    console.log("event: ", event);
+    
     let events = getEventsFromStorage();
-
-    if (typeof event === "object" && event !== null && typeof event.date === "string") {
-        // Validate the date format
-        if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(event.date)) {
-            console.error("Invalid date format in event:", event.date);
-            return;
-        }
-        events.push(event);
-    } else {
-        console.error("Invalid event object to save:", event);
-        return;
-    }
+    events.push(event);
+    console.log("events: ", events);
+    
+    // if (typeof event === "object" && event !== null) {
+    //     // Validate the date format
+    //     if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(event.date)) {
+    //         console.error("Invalid date format in event:", event.date);
+    //         return;
+    //     }
+        
+    // } else {
+    //     console.error("Invalid event object to save:", event);
+    //     return;
+    // }
 
     localStorage.setItem("events", JSON.stringify(events));
 }

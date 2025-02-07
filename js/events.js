@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
   // Load the modal
   fetch("../views/modal.html")
@@ -16,7 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //to open de modal
   function openModal(day, month, year) {
-    const date = `${year}-${month + 1}-${day}`;
+    const date = `${year}-${(month + 1).toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+    console.log("++++++date: ", date);
 
     const modalElement = document.getElementById("eventModal");
     const existingModal = bootstrap.Modal.getInstance(modalElement);
@@ -24,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
       existingModal.hide();
     }
 
-    document.getElementById("eventDate").value = date;
+    document.getElementById("eventDate").value = date.split(" ")[0];
     document.getElementById("eventTitle").value = "";
     document.getElementById("eventDescription").value = "";
     document.getElementById("eventTime").value = "";
@@ -34,12 +38,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function saveEvent() {
-    const date = document.getElementById("eventDate").value.trim();
+    let eventDate = document.getElementById("eventDate").value.trim();
+    eventDate = eventDate.replace(/[^\d\-]/g, ""); 
+
+
     const title = document.getElementById("eventTitle").value.trim();
     const description = document
       .getElementById("eventDescription")
       .value.trim();
     const time = document.getElementById("eventTime").value;
+
+    let [year, month, day] = eventDate.split("-").map(Number);
+    const date = `${year}-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+      console.log("-----date (cleaned): ", date);
 
     if (!title || !time) {
       alert("Title and time are required!");
@@ -52,51 +65,13 @@ document.addEventListener("DOMContentLoaded", function () {
       time,
       date,
     };
+    console.log("new event: ", newEvent);
+    
 
     saveEventToStorage(newEvent);
     bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();
-    updateCalendarEvents();
-  }
-
-  function updateCalendarEvents() {
-    const storedEvents = getEventsFromStorage();
-    document.querySelectorAll(".day-cell").forEach((cell) => {
-      const day = cell.textContent.trim();
-      const month = new Date().getMonth();
-      const year = new Date().getFullYear();
-      const key = `${year}-${month + 1}-${day}`;
-
-      cell.innerHTML = ""; // clean the cell
-
-      // add the day number
-      let dateSpan = document.createElement("span");
-      dateSpan.textContent = day;
-      dateSpan.classList.add("date-number");
-      cell.appendChild(dateSpan);
-
-      // add the event container
-      let eventContainer = document.createElement("div");
-      eventContainer.classList.add("event-container");
-      cell.appendChild(eventContainer);
-
-      // add the event to the cell
-      if (!Array.isArray(storedEvents[key])) {
-        storedEvents[key] = storedEvents[key] ? [storedEvents[key]] : [];
-      }
-      storedEvents[key].forEach((event) => {
-        let eventElement = document.createElement("span");
-        eventElement.textContent = `${event.title} (${event.time})`;
-        eventElement.classList.add("event-card");
-
-        // different for the jaguim
-        if (event.isJag) {
-          eventElement.classList.add("jag-event");
-        }
-
-        // add the animation
-        eventElement.style.animation = "eventAppear 0.3s ease-in-out";
-      });
-    });
+    window.location.reload();
+    renderCalendar();
   }
 
   // Event listener to submit the form
@@ -117,13 +92,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // save the events in the local storage
-      saveEventToStorage(key, { title, description, time });
+      // saveEventToStorage(key, { title, description, time });
 
       // close the modal
       bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();
 
       // update the calendar
-      updateCalendarEvents();
+      // updateCalendarEvents();
     }
   });
 
@@ -137,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  updateCalendarEvents();
+  // updateCalendarEvents();
 });
 
 async function fetchJaguim(year, month) {
@@ -152,14 +127,14 @@ async function fetchJaguim(year, month) {
 
     jaguim.forEach((jag) => {
       let [gYear, gMonth, gDay] = jag.date.split("T")[0].split("-").map(Number);
-      let key = `${gYear}-${gMonth}-${gDay}`; 
+      let key = `${gYear}-${gMonth}-${gDay}`;
 
       if (!events.some((e) => e.title === jag.title && e.date === key)) {
         events.push({
           title: jag.title,
           description: "Jewish holiday",
           time: "All day",
-          date: key, 
+          date: key,
           isJag: true,
         });
       }

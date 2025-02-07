@@ -20,43 +20,44 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("current date: ", currentDate);
 
   // get the jaguim
-  async function getJaguim(year, month) {
-    try {
-      let response = await fetch(
-        `https://www.hebcal.com/holidays?cfg=json&year=${year}&month=${month}&geo=none&maj=on&min=on&mod=on`
-      );
-      let data = await response.json();
-      let jaguim = data.items || [];
-  
-      let events = getEventsFromStorage();
-      jaguim.forEach((jag) => {
-        let [gYear, gMonth, gDay] = jag.date.split("T")[0].split("-").map(Number);
-        let key = `${gYear}-${gMonth}-${gDay}`; 
-  
-        if (!events.some((e) => e.title === jag.title && e.date === key)) {
-          events.push({
-            title: jag.title,
-            description: "Jewish holiday",
-            time: "All day",
-            date: key,  
-            isJag: true,
-          });
-        }
-      });
-  
-      localStorage.setItem("events", JSON.stringify(events));
-      return jaguim;
-    } catch (error) {
-      console.error("Error fetching Jewish holidays:", error);
-      return [];
-    }
-  }
-  
+  // async function getJaguim(year, month) {
+  //   try {
+  //     let response = await fetch(
+  //       `https://www.hebcal.com/holidays?cfg=json&year=${year}&month=${month}&geo=none&maj=on&min=on&mod=on`
+  //     );
+  //     let data = await response.json();
+  //     let jaguim = data.items || [];
+
+  //     let events = getEventsFromStorage();
+  //     jaguim.forEach((jag) => {
+  //       let [gYear, gMonth, gDay] = jag.date.split("T")[0].split("-").map(Number);
+  //       let key = `${gYear}-${gMonth}-${gDay}`;
+
+  //       if (!events.some((e) => e.title === jag.title && e.date === key)) {
+  //         events.push({
+  //           title: jag.title,
+  //           description: "Jewish holiday",
+  //           time: "All day",
+  //           date: key,
+  //           isJag: true,
+  //         });
+  //       }
+  //     });
+
+  //     localStorage.setItem("events", JSON.stringify(events));
+  //     return jaguim;
+  //   } catch (error) {
+  //     console.error("Error fetching Jewish holidays:", error);
+  //     return [];
+  //   }
+  // }
+
   async function renderCalendar() {
     calendar.innerHTML = "";
 
     let year = currentDate.getFullYear();
     let month = currentDate.getMonth();
+    let currentDay = currentDate.getDay();
     let firstDay = new Date(year, month, 1).getDay();
     let lastDay = new Date(year, month + 1, 0).getDate();
 
@@ -66,8 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     let events = getEventsFromStorage();
+    console.log("events from storage: ", events);
 
-    let date = 1;
+    let day = 1;
     for (let i = 0; i < 6; i++) {
       let row = document.createElement("tr");
       for (let j = 0; j < 7; j++) {
@@ -76,52 +78,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (i === 0 && j < firstDay) {
           cell.textContent = "";
-        } else if (date > lastDay) {
+        } else if (day > lastDay) {
           break;
         } else {
-          let key = `${year}-${month + 1}-${date}`;
+          let key = `${year}-${(month + 1).toString().padStart(2, "0")}-${day
+            .toString()
+            .padStart(2, "0")}`;
+          //let key = ${year}-${month + 1}-${day};
+          console.log("key: ", key);
 
           let dateSpan = document.createElement("span");
-          dateSpan.textContent = date;
+          dateSpan.textContent = day;
           dateSpan.classList.add("date-number");
           cell.appendChild(dateSpan);
 
           let hebrewDateSpan = document.createElement("small");
           hebrewDateSpan.classList.add("hebrew-date");
 
-          HebrewDateManager.getHebrewDate(year, month + 1, date).then(
+          HebrewDateManager.getHebrewDate(year, month + 1, day).then(
             (hebrewDate) => {
               hebrewDateSpan.textContent = hebrewDate;
             }
           );
 
-          cell.appendChild(hebrewDateSpan); // ✅ Se agrega solo al DOM
+          cell.appendChild(hebrewDateSpan);
 
           let eventContainer = document.createElement("div");
           eventContainer.classList.add("event-container");
           cell.appendChild(eventContainer);
+          //cell.appendChild(eventContainer);
+          
 
           let dayEvents = events.filter((event) => event.date === key);
           dayEvents.forEach((event) => {
+            console.log("eventDate: ", event.date);
+            
             let eventElement = document.createElement("span");
+            console.log("eventElement: ", eventElement);
             eventElement.textContent = `${event.title} (${event.time})`;
+            console.log("eventElement.textContrente: ", eventElement.textContent);
+            
             eventElement.classList.add(
-              event.isJag ? "holiday-event" : "event-card"
+              event.isJag ? "jag-event" : "event-card"
             );
             eventContainer.appendChild(eventElement);
+            console.log("eventContainer después de appendChild: ", eventContainer);
+            
           });
+          let currentDate = new Date(year, month, day);
           if (
-            date === today.getDate() &&
-            month === today.getMonth() &&
-            year === today.getFullYear()
+            currentDate.getDate() === today.getDate()
           ) {
             console.log("today: ", today);
             cell.classList.add("today"); // to highlight today's date
-          } else if (new Date(year, month, date) < today) {
+          } else if (currentDate < today) {
             cell.classList.add("past-day"); // to highlight past days
             cell.classList.add("disabled");
           }
-          date++;
+          day++;
         }
         row.appendChild(cell);
       }
@@ -133,13 +147,11 @@ document.addEventListener("DOMContentLoaded", function () {
   prevButton.addEventListener("click", function () {
     currentDate.setMonth(currentDate.getMonth() - 1);
     renderCalendar();
-    updateCalendarEvents(currentDate);
   });
 
   nextButton.addEventListener("click", function () {
     currentDate.setMonth(currentDate.getMonth() + 1);
     renderCalendar();
-    updateCalendarEvents(currentDate);
   });
 
   toggleWeeklyViewButton.addEventListener("click", function () {
@@ -147,5 +159,4 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   renderCalendar();
-  updateCalendarEvents(currentDate);
 });
