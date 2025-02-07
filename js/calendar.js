@@ -127,6 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
           });
           let currentDate = new Date(year, month, day);
           if (
+            currentDate.getFullYear() === today.getFullYear() &&
+            currentDate.getMonth() === today.getMonth() &&
+            currentDate.getDay() === today.getDay() &&
             currentDate.getDate() === today.getDate()
           ) {
             console.log("today: ", today);
