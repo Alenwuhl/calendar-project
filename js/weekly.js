@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       events.forEach((event) => {
         let eventCard = document.createElement("div");
-        eventCard.classList.add("event-card");
+        eventCard.classList.add(event.isJag ? "jag-event" : "event-card");
         eventCard.innerHTML = `<strong>${event.title}</strong><br>${event.description}<br><small>${event.time}</small>`;
         eventContainer.appendChild(eventCard);
       });

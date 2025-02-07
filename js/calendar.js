@@ -78,10 +78,6 @@ const renderCalendar = () => {
 
           eventElement.classList.add(event.isJag ? "jag-event" : "event-card");
           eventContainer.appendChild(eventElement);
-          console.log(
-            "eventContainer después de appendChild: ",
-            eventContainer
-          );
         });
         let currentDate = new Date(year, month, day);
         if (

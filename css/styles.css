@@ -44,15 +44,7 @@
   font-weight: bold;
   padding: 10%;
 }
-.jag-event {
-  background-color: #ffcc00 !important;
-  color: black !important;
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 5px;
-  display: block;
-  text-align: center;
-}
+
 .disabled {
   pointer-events: none;
   opacity: 0.6;
@@ -89,6 +81,16 @@
   border-radius: 5px;
   min-width: 150px;
   white-space: nowrap;
+}
+.jag-event {
+  background-color: #ffcc00 !important;
+  color: black !important;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 150px;
+  /* display: block;
+  text-align: center; */
 }
 .today-weekly {
   background-color: #ffdddd;
