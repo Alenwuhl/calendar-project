@@ -1,0 +1,32 @@
+.today {
+    color: red !important;
+    font-weight: bold;
+}
+.past-day {
+    color: gray;
+    opacity: 0.6;
+}
+.day-cell {
+    min-height: 80px; 
+    vertical-align: top; 
+    padding: 5px;
+    position: relative;
+    overflow: hidden;
+}
+.event-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.event-container span {
+    display: block;
+    font-size: 12px;
+    background-color: #007bff;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+    margin-top: 2px;
+    width: 100%;
+    text-align: center;
+}

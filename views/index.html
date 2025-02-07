@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <!-- Links to Boot and the css -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <button id="prev" class="btn btn-primary">
+          <i class="bi bi-caret-left-square-fill"></i>
+        </button>
+        <h1 id="monthYear" class="text-center">February 2025</h1>
+        <button id="next" class="btn btn-primary">
+          <i class="bi bi-caret-right-square-fill"></i>
+        </button>
+      </div>
+
+      <table class="table table-bordered table-responsive-sm text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+      </table>
+
+      <button id="toogleView" class="btn btn-scondary">
+        <i class="bi bi-calendar-week-fill"></i>
+        Switch to weekly View
+      </button>
+    </div>
+
+    <!-- Link to Boot and JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/weekly.js"></script>
+  </body>
+</html>
