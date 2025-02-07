@@ -39,11 +39,21 @@
   margin-top: 5px;
 }
 .date-number {
-text-align: start;
+  text-align: start;
   font-size: 20px;
   font-weight: bold;
   padding: 10%;
 }
+.jag-event {
+    background-color: #ffcc00 !important;
+    color: black !important;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+}
+
 
 /* === Weekly view === */
 .weekly-container {
@@ -75,4 +85,42 @@ text-align: start;
   border-radius: 5px;
   min-width: 150px;
   white-space: nowrap;
+}
+.today-weekly {
+  background-color: #ffdddd;
+  border-left: 5px solid red;
+  font-weight: bold;
+}
+
+/* === Animations === */
+/* Animation to switch between views */
+.calendar-container,
+.weekly-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Animation to add new events */
+@keyframes eventAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.event-card {
+  animation: eventAppear 0.3s ease-in-out;
 }

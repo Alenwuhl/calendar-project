@@ -26,8 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function loadWeekView() {
+    let weeklyContainer = document.querySelector(".weekly-container");
+    weeklyContainer.classList.add("fade");
+
+    setTimeout(() => {
+      weeklyContainer.classList.remove("fade");
+    }, 500);
+
     if (!weekDaysContainer) {
-      console.error("El contenedor de la vista semanal no está presente.");
+      console.error("The weekDaysContainer element is not found.");
       return;
     }
 
@@ -35,6 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
     weekRangeTitle.textContent = `${formatDate(start)} - ${formatDate(end)}`;
 
     weekDaysContainer.innerHTML = "";
+    let today = new Date();
+
+    let storedEvents = getEventsFromStorage();
 
     for (let i = 0; i < 7; i++) {
       let day = new Date(start);
@@ -45,6 +55,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let dayColumn = document.createElement("div");
       dayColumn.classList.add("day-column");
+
+      if (
+        day.getDate() === today.getDate() &&
+        day.getMonth() === today.getMonth() &&
+        day.getFullYear() === today.getFullYear()
+      ) {
+        dayColumn.classList.add("today-weekly");
+      }
+
+      let dayHeader = document.createElement("div");
+      dayHeader.classList.add("day-header");
 
       let dayTitle = document.createElement("h5");
       dayTitle.textContent = formatDate(day);
@@ -57,9 +78,17 @@ document.addEventListener("DOMContentLoaded", function () {
         day.getMonth() + 1,
         day.getDate()
       );
+      console.log("date", await HebrewDateManager.getHebrewDate(2025, 2, 8));
 
-      let events = getEventsFromStorage()[dayKey] || [];
-      events.sort((a, b) => a.time.localeCompare(b.time));
+      // add the title and the hebrew date to the day header
+      dayHeader.appendChild(dayTitle);
+      dayHeader.appendChild(hebrewDateSpan);
+
+      // add the day header to the day column
+      dayColumn.appendChild(dayHeader);
+
+      let events = storedEvents[dayKey] || [];
+      events.sort((a, b) => (a.isHoliday ? -1 : 1));
 
       let eventContainer = document.createElement("div");
       eventContainer.classList.add("event-container");
