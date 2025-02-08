@@ -113,15 +113,15 @@ const addEventToGoogleCalendar = async (event) => {
   }
 
   var calendarEvent = {
-    summary: title,
+    summary: 'Event title',
     location: "Google Meet",
-    description: desc,
+    description: 'Event description',
     start: {
-      dateTime: startTime,
+      dateTime: '2021-09-01T09:00:00-07:00',
       timeZone: "America/Los_Angeles",
     },
     end: {
-      dateTime: endTime,
+      dateTime: '2021-09-01T17:00:00-07:00',
       timeZone: "America/Los_Angeles",
     },
     recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
