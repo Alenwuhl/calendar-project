@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const date = `${year}-${(month + 1).toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
-    console.log("++++++date: ", date);
 
     const modalElement = document.getElementById("eventModal");
     const existingModal = bootstrap.Modal.getInstance(modalElement);
@@ -70,13 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let confirmSync = confirm("Do you want to sync with Google Calendar?");
     if (confirmSync) {
       handleAuthClick();
-
-      // initGoogleIdentity();
-      // initGoogleApi();
       addEventToGoogleCalendar(newEvent);
     }
     renderCalendar();
-    // window.location.reload();
   }
 
   // Event listener to submit the form
@@ -95,15 +90,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Title and time are required!");
         return;
       }
-
-      // save the events in the local storage
-      // saveEventToStorage(key, { title, description, time });
-
       // close the modal
       bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();
-
-      // update the calendar
-      // updateCalendarEvents();
     }
   });
 
@@ -116,37 +104,5 @@ document.addEventListener("DOMContentLoaded", function () {
       openModal(day, month, year);
     }
   });
-
-  // updateCalendarEvents();
 });
 
-async function fetchJaguim(year, month) {
-  try {
-    let response = await fetch(
-      `https://www.hebcal.com/holidays?cfg=json&year=${year}&month=${month}&geo=none&maj=on&min=on&mod=on`
-    );
-    let data = await response.json();
-    let jaguim = data.items || [];
-
-    let events = getEventsFromStorage();
-
-    jaguim.forEach((jag) => {
-      let [gYear, gMonth, gDay] = jag.date.split("T")[0].split("-").map(Number);
-      let key = `${gYear}-${gMonth}-${gDay}`;
-
-      if (!events.some((e) => e.title === jag.title && e.date === key)) {
-        events.push({
-          title: jag.title,
-          description: "Jewish holiday",
-          time: "All day",
-          date: key,
-          isJag: true,
-        });
-      }
-    });
-
-    localStorage.setItem("events", JSON.stringify(events));
-  } catch (error) {
-    console.error("Error fetching the Jaguim:", error);
-  }
-}

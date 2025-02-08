@@ -1,3 +1,4 @@
+// function to get Hebrew date
 const HebrewDateManager = {
     hebrewDates: {},
 

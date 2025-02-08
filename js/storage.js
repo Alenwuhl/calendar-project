@@ -23,23 +23,8 @@ function saveEventToStorage(event) {
     
     let events = getEventsFromStorage();
     events.push(event);
-    console.log("events: ", events);
-    
-    // if (typeof event === "object" && event !== null) {
-    //     // Validate the date format
-    //     if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(event.date)) {
-    //         console.error("Invalid date format in event:", event.date);
-    //         return;
-    //     }
-        
-    // } else {
-    //     console.error("Invalid event object to save:", event);
-    //     return;
-    // }
-
     localStorage.setItem("events", JSON.stringify(events));
 }
-
 
 function clearEventsFromStorage() {
   localStorage.setItem("events", JSON.stringify([]));

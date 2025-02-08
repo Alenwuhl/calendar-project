@@ -1,29 +1,42 @@
 <!-- Modal for add an event -->
-<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="eventForm">
-                    <div class="mb-3">
-                        <label for="eventTitle" class="form-label">Title</label>
-                        <input type="text" id="eventTitle" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventDescription" class="form-label">Description (Optional)</label>
-                        <textarea id="eventDescription" class="form-control"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventTime" class="form-label">Time</label>
-                        <input type="time" id="eventTime" class="form-control" required>
-                    </div>
-                    <input type="hidden" id="eventDate">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="eventModal"
+  tabindex="-1"
+  aria-labelledby="eventModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="eventForm">
+          <div class="mb-3">
+            <label for="eventTitle" class="form-label">Title</label>
+            <input type="text" id="eventTitle" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="eventDescription" class="form-label"
+              >Description (Optional)</label
+            >
+            <textarea id="eventDescription" class="form-control"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="eventTime" class="form-label">Time</label>
+            <input type="time" id="eventTime" class="form-control" required />
+          </div>
+          <input type="hidden" id="eventDate" />
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

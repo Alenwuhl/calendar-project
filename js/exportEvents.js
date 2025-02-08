@@ -1,3 +1,4 @@
+// to export events to a .ics file
 function exportToICal() {
   let events = getEventsFromStorage();
   if (!events.length) {
@@ -31,34 +32,3 @@ function exportToICal() {
   a.click();
   document.body.removeChild(a);
 }
-
-// async function addEventToGoogleCalendar(event) {
-//     if (!googleApiReady) {
-//         ini
-//     }
-//     const calendarEvent = {
-//       summary: event.title,
-//       description: event.description,
-//       start: { dateTime: `${event.date}T${event.time}:00` },
-//       end: { dateTime: `${event.date}T${event.time}:00` },
-//     };
-  
-//     try {
-//       let response = await gapi.client.calendar.events.insert({
-//         calendarId: "primary",
-//         resource: calendarEvent,
-//       });
-//       console.log("Evento agregado a Google Calendar:", response);
-//     } catch (error) {
-//       console.error("Error al agregar evento a Google Calendar:", error);
-//     }
-//   }
-  
-
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   document.getElementById("exportICal").addEventListener("click", exportToICal);
-//   document
-//     .getElementById("syncGoogle")
-//     .addEventListener("click", addEventToGoogleCalendar);
-// });
