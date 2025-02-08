@@ -120,38 +120,36 @@ const addEventToGoogleCalendar = async (event) => {
     token = localStorage.getItem("google_access_token");
   }
 
-  gapi.client.setToken({ access_token: token });
-
   var calendarEvent = {
-    summary: 'Event title',
-    location: "Google Meet",
-    description: 'Event description',
-    start: {
-      dateTime: '2021-09-01T09:00:00-07:00',
-      timeZone: "America/Los_Angeles"
+    "summary": "Event title",
+    "location": "Google Meet",
+    "description": "Event description",
+    "start": {
+      "dateTime": "2021-09-01T09:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
     },
-    end: {
-      dateTime: '2021-09-01T17:00:00-07:00',
-      timeZone: "America/Los_Angeles"
+    "end": {
+      "dateTime": "2021-09-01T17:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
     },
-    recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
-    attendees: [{ email: "abc@google.com" }, { email: "xyz@google.com" }],
-    reminders: {
-      useDefault: false,
-      overrides: [
-        { method: "email", minutes: 24 * 60 },
-        { method: "popup", minutes: 10 },
-      ],
-    },
-  };
+    "recurrence": ["RRULE:FREQ=DAILY;COUNT=2"],
+    "attendees": [{ "email": "abc@google.com" }, { "email": "xyz@google.com" }],
+    "reminders": {
+      "useDefault": false,
+      "overrides": [
+        { "method": "email", "minutes": 1440 },
+        { "method": "popup", "minutes": 10 }
+      ]
+    }
+  }
 
   try {
     const request = await gapi.client.calendar.events.insert({
       calendarId: "primary",
       resource: calendarEvent,
-      // headers: {
-      //   Authorization: `Bearer ${token}`, // access token
-      // },
+      headers: {
+        Authorization: `Bearer ${token}`, // access token
+      },
     });
     console.log('request: ', request);
 
