@@ -49,7 +49,7 @@ async function handleAuthClick() {
       throw resp;
     }
     localStorage.setItem("google_access_token", resp.access_token); // save the token
-    await listUpcomingEvents();
+    // await listUpcomingEvents();
   };
 
   // if the token is not in the local storage, request auth
@@ -126,11 +126,11 @@ const addEventToGoogleCalendar = async (event) => {
     description: 'Event description',
     start: {
       dateTime: '2021-09-01T09:00:00-07:00',
-      timeZone: "America/Los_Angeles",
+      timeZone: "America/Los_Angeles"
     },
     end: {
       dateTime: '2021-09-01T17:00:00-07:00',
-      timeZone: "America/Los_Angeles",
+      timeZone: "America/Los_Angeles"
     },
     recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
     attendees: [{ email: "abc@google.com" }, { email: "xyz@google.com" }],
@@ -151,6 +151,7 @@ const addEventToGoogleCalendar = async (event) => {
         Authorization: `Bearer ${token}`, // access token
       },
     });
+    console.log('request: ', request);
 
     const calendarEventLink = request.result.htmlLink;
     console.log("Evento agregado a Google Calendar:", calendarEventLink);
