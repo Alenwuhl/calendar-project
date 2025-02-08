@@ -120,6 +120,8 @@ const addEventToGoogleCalendar = async (event) => {
     token = localStorage.getItem("google_access_token");
   }
 
+  gapi.client.setToken({ access_token: token });
+
   var calendarEvent = {
     summary: 'Event title',
     location: "Google Meet",
@@ -147,9 +149,9 @@ const addEventToGoogleCalendar = async (event) => {
     const request = await gapi.client.calendar.events.insert({
       calendarId: "primary",
       resource: calendarEvent,
-      headers: {
-        Authorization: `Bearer ${token}`, // access token
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`, // access token
+      // },
     });
     console.log('request: ', request);
 
@@ -160,7 +162,6 @@ const addEventToGoogleCalendar = async (event) => {
       "content"
     ).innerText = `Evento agregado: ${calendarEventLink}`;
   } catch (error) {
-    console.log('request error: ', request);
     console.error("Error al agregar el evento:", error);
     document.getElementById("content").innerText =
       "Error al agregar el evento.";
