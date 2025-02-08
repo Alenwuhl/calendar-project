@@ -3,7 +3,7 @@ const CLIENT_ID =
 const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
 ];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const SCOPES = "https://www.googleapis.com/auth/calendar";
 const API_KEY = "AIzaSyCvRSx2T8yKHdP3X65Rzq-epZKqyb8w7iA";
 
 let tokenClient;
@@ -29,10 +29,18 @@ function gisLoaded() {
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPES,
-    callback: "", // is set later
+    callback: (resp) => {
+      if (resp.error) {
+        console.error("❌ Error en la autenticación:", resp);
+        return;
+      }
+      console.log("✅ Token recibido:", resp.access_token);
+      localStorage.setItem("google_access_token", resp.access_token);
+      gapi.client.setToken({ access_token: resp.access_token }); // Asigna el token a gapi
+    }
   });
-  gisInited = true;
 }
+
 
 // Handle the auth in the click
 async function handleAuthClick() {
