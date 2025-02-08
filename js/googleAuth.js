@@ -160,6 +160,7 @@ const addEventToGoogleCalendar = async (event) => {
       "content"
     ).innerText = `Evento agregado: ${calendarEventLink}`;
   } catch (error) {
+    console.log('request error: ', request);
     console.error("Error al agregar el evento:", error);
     document.getElementById("content").innerText =
       "Error al agregar el evento.";
