@@ -112,15 +112,17 @@ const addEventToGoogleCalendar = async (event) => {
   }
 
   const calendarEvent = {
-    summary: "Google I/O 2015",
+    summary: "Google I/O 2025",
     location: "800 Howard St., San Francisco, CA 94103",
     description: "A chance to hear more about Google's developer products.",
     start: {
-      date: "2020-05-28"
+      dateTime: "2025-05-28T10:00:00",  // Debe incluir la hora
+      timeZone: "America/Los_Angeles"
     },
     end: {
-      date: "2020-05-29"
-    }
+      dateTime: "2025-05-28T11:00:00",  // Debe incluir la hora
+      timeZone: "America/Los_Angeles"
+    },
   };
 
   try {
