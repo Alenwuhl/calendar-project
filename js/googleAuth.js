@@ -3,17 +3,16 @@ const CLIENT_ID =
 const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
 ];
-const SCOPES = "https://www.googleapis.com/auth/calendar";
-const API_KEY = 'AIzaSyCvRSx2T8yKHdP3X65Rzq-epZKqyb8w7iA';
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const API_KEY = "AIzaSyCvRSx2T8yKHdP3X65Rzq-epZKqyb8w7iA";
 
 let tokenClient;
-  let gapiInited = false;
-  let gisInited = false;
-
+let gapiInited = false;
+let gisInited = false;
 
 // Callback after the Google API is loaded
 function gapiLoaded() {
-  gapi.load('client', initializeGapiClient);
+  gapi.load("client", initializeGapiClient);
 }
 
 // initialize the Google API client
@@ -30,7 +29,7 @@ function gisLoaded() {
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPES,
-    callback: '', // is set later
+    callback: "", // is set later
   });
   gisInited = true;
 }
@@ -39,7 +38,7 @@ function gisLoaded() {
 async function handleAuthClick() {
   tokenClient.callback = async (resp) => {
     if (resp.error !== undefined) {
-      throw (resp);
+      throw resp;
     }
     localStorage.setItem("google_access_token", resp.access_token); // save the token
     await listUpcomingEvents();
@@ -47,10 +46,10 @@ async function handleAuthClick() {
 
   // if the token is not in the local storage, request auth
   if (!localStorage.getItem("google_access_token")) {
-    tokenClient.requestAccessToken({ prompt: 'consent' });
+    tokenClient.requestAccessToken({ prompt: "consent" });
   } else {
     // if the token is in the local storage
-    tokenClient.requestAccessToken({ prompt: '' });
+    tokenClient.requestAccessToken({ prompt: "" });
   }
 }
 
@@ -59,10 +58,10 @@ function handleSignoutClick() {
   const token = gapi.client.getToken();
   if (token !== null) {
     google.accounts.oauth2.revoke(token.access_token);
-    gapi.client.setToken('');
-    document.getElementById('content').innerText = '';
-    document.getElementById('authorize_button').innerText = 'Authorize';
-    document.getElementById('signout_button').style.visibility = 'hidden';
+    gapi.client.setToken("");
+    document.getElementById("content").innerText = "";
+    document.getElementById("authorize_button").innerText = "Authorize";
+    document.getElementById("signout_button").style.visibility = "hidden";
   }
 }
 
@@ -71,32 +70,34 @@ async function listUpcomingEvents() {
   let response;
   try {
     const request = {
-      'calendarId': 'primary',
-      'timeMin': (new Date()).toISOString(),
-      'showDeleted': false,
-      'singleEvents': true,
-      'maxResults': 10,
-      'orderBy': 'startTime',
+      calendarId: "primary",
+      timeMin: new Date().toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 10,
+      orderBy: "startTime",
     };
     response = await gapi.client.calendar.events.list(request);
   } catch (err) {
     console.error("Error al obtener los eventos:", err);
-    document.getElementById('content').innerText = "No se pudieron cargar los eventos.";
+    document.getElementById("content").innerText =
+      "No se pudieron cargar los eventos.";
     return;
   }
 
   const events = response.result.items;
   if (!events || events.length == 0) {
-    document.getElementById('content').innerText = 'No se encontraron eventos.';
+    document.getElementById("content").innerText = "No se encontraron eventos.";
     return;
   }
 
   const output = events.reduce(
-    (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
-    'Eventos:\n'
+    (str, event) =>
+      `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
+    "Eventos:\n"
   );
-  
-  document.getElementById('content').innerText = output;
+
+  document.getElementById("content").innerText = output;
 }
 
 // add an event to the Google Calendar
@@ -107,21 +108,30 @@ const addEventToGoogleCalendar = async (event) => {
     console.warn(
       "⚠ No hay un Access Token válido. Intentando obtener uno nuevo..."
     );
-    await handleAuthClick();  // try to authenticate
+    await handleAuthClick(); // try to authenticate
     token = localStorage.getItem("google_access_token");
   }
 
-  const calendarEvent = {
-    summary: "Google I/O 2025",
-    location: "800 Howard St., San Francisco, CA 94103",
-    description: "A chance to hear more about Google's developer products.",
+  var calendarEvent = {
+    summary: title,
+    location: "Google Meet",
+    description: desc,
     start: {
-      dateTime: "2025-05-28T10:00:00",  // Debe incluir la hora
-      timeZone: "America/Los_Angeles"
+      dateTime: startTime,
+      timeZone: "America/Los_Angeles",
     },
     end: {
-      dateTime: "2025-05-28T11:00:00",  // Debe incluir la hora
-      timeZone: "America/Los_Angeles"
+      dateTime: endTime,
+      timeZone: "America/Los_Angeles",
+    },
+    recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
+    attendees: [{ email: "abc@google.com" }, { email: "xyz@google.com" }],
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: "email", minutes: 24 * 60 },
+        { method: "popup", minutes: 10 },
+      ],
     },
   };
 
@@ -130,16 +140,19 @@ const addEventToGoogleCalendar = async (event) => {
       calendarId: "primary",
       resource: calendarEvent,
       headers: {
-        Authorization: `Bearer ${token}`  // access token
-      }
+        Authorization: `Bearer ${token}`, // access token
+      },
     });
 
     const calendarEventLink = request.result.htmlLink;
     console.log("Evento agregado a Google Calendar:", calendarEventLink);
-    
-    document.getElementById('content').innerText = `Evento agregado: ${calendarEventLink}`;
+
+    document.getElementById(
+      "content"
+    ).innerText = `Evento agregado: ${calendarEventLink}`;
   } catch (error) {
     console.error("Error al agregar el evento:", error);
-    document.getElementById('content').innerText = "Error al agregar el evento.";
+    document.getElementById("content").innerText =
+      "Error al agregar el evento.";
   }
 };
