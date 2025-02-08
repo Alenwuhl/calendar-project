@@ -3,7 +3,7 @@ const CLIENT_ID =
 const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
 ];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const SCOPES = "https://www.googleapis.com/auth/calendar";
 const API_KEY = 'AIzaSyCvRSx2T8yKHdP3X65Rzq-epZKqyb8w7iA';
 
 let tokenClient;
