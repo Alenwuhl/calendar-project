@@ -112,10 +112,15 @@ const addEventToGoogleCalendar = async (event) => {
   }
 
   const calendarEvent = {
-    summary: event.title,
-    description: event.description,
-    start: { dateTime: `${event.date}T${event.time}:00+02:00` }, 
-    end: { dateTime: `${event.date}T${event.time}:00+02:00` },
+    summary: "Google I/O 2015",
+    location: "800 Howard St., San Francisco, CA 94103",
+    description: "A chance to hear more about Google's developer products.",
+    start: {
+      date: "2020-05-28"
+    },
+    end: {
+      date: "2020-05-29"
+    }
   };
 
   try {
