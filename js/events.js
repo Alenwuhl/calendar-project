@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
   // Load the modal
   fetch("../views/modal.html")
@@ -37,10 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
     new bootstrap.Modal(modalElement).show();
   }
 
-  async function saveEvent() {
+  function saveEvent() {
     let eventDate = document.getElementById("eventDate").value.trim();
-    eventDate = eventDate.replace(/[^\d\-]/g, ""); 
-
+    eventDate = eventDate.replace(/[^\d\-]/g, "");
 
     const title = document.getElementById("eventTitle").value.trim();
     const description = document
@@ -52,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const date = `${year}-${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
-      console.log("-----date (cleaned): ", date);
+    console.log("-----date (cleaned): ", date);
 
     if (!title || !time) {
       alert("Title and time are required!");
@@ -66,15 +64,18 @@ document.addEventListener("DOMContentLoaded", function () {
       date,
     };
     console.log("new event: ", newEvent);
-    
 
     saveEventToStorage(newEvent);
     bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();
+    let confirmSync = confirm("Do you want to sync with Google Calendar?");
+    if (confirmSync) {
+      handleAuthClick();
+
+      // initGoogleIdentity();
+      // initGoogleApi();
+      addEventToGoogleCalendar(newEvent);
+    }
     renderCalendar();
-    // let confirmSync = confirm("Do you want to add this event to your Google Calendar?");
-    // if (confirmSync) {
-    //     addEventToGoogleCalendar(newEvent);
-    // }
     // window.location.reload();
   }
 

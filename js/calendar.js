@@ -9,7 +9,7 @@ let currentDate = new Date(
 let today = new Date(
   new Date().toLocaleString("en-US", { timeZone: "Asia/Jerusalem" })
 );
-console.log("current date: ", currentDate);
+// console.log("current date: ", currentDate);
 
 const renderCalendar = () => {
   calendar.innerHTML = "";
@@ -26,7 +26,7 @@ const renderCalendar = () => {
   });
 
   let events = getEventsFromStorage();
-  console.log("events from storage: ", events);
+  // console.log("events from storage: ", events);
 
   let day = 1;
   for (let i = 0; i < 6; i++) {
@@ -44,7 +44,7 @@ const renderCalendar = () => {
           .toString()
           .padStart(2, "0")}`;
         //let key = ${year}-${month + 1}-${day};
-        console.log("key: ", key);
+        // console.log("key: ", key);
 
         let dateSpan = document.createElement("span");
         dateSpan.textContent = day;
@@ -69,12 +69,12 @@ const renderCalendar = () => {
 
         let dayEvents = events.filter((event) => event.date === key);
         dayEvents.forEach((event) => {
-          console.log("eventDate: ", event.date);
+          // console.log("eventDate: ", event.date);
 
           let eventElement = document.createElement("span");
-          console.log("eventElement: ", eventElement);
+          // console.log("eventElement: ", eventElement);
           eventElement.textContent = `${event.title} (${event.time})`;
-          console.log("eventElement.textContrente: ", eventElement.textContent);
+          // console.log("eventElement.textContrente: ", eventElement.textContent);
 
           eventElement.classList.add(event.isJag ? "jag-event" : "event-card");
           eventContainer.appendChild(eventElement);
@@ -86,7 +86,7 @@ const renderCalendar = () => {
           currentDate.getDay() === today.getDay() &&
           currentDate.getDate() === today.getDate()
         ) {
-          console.log("today: ", today);
+          // console.log("today: ", today);
           cell.classList.add("today"); // to highlight today's date
         } else if (currentDate < today) {
           cell.classList.add("past-day"); // to highlight past days

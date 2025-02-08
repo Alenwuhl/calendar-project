@@ -1,52 +1,64 @@
 function exportToICal() {
-    let events = getEventsFromStorage();
-    if (!events.length) {
-        alert("No events to export.");
-        return;
-    }
+  let events = getEventsFromStorage();
+  if (!events.length) {
+    alert("No events to export.");
+    return;
+  }
 
-    let icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//My Calendar//EN\n`;
-    
-    events.forEach(event => {
-        let startDate = event.date.replace(/-/g, "") + "T" + event.time.replace(":", "") + "00Z";
-        let endDate = startDate; 
+  let icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//My Calendar//EN\n`;
 
-        icsContent += `BEGIN:VEVENT\n`;
-        icsContent += `SUMMARY:${event.title}\n`;
-        icsContent += `DESCRIPTION:${event.description}\n`;
-        icsContent += `DTSTART:${startDate}\n`;
-        icsContent += `DTEND:${endDate}\n`;
-        icsContent += `END:VEVENT\n`;
-    });
+  events.forEach((event) => {
+    let startDate =
+      event.date.replace(/-/g, "") + "T" + event.time.replace(":", "") + "00Z";
+    let endDate = startDate;
 
-    icsContent += `END:VCALENDAR`;
+    icsContent += `BEGIN:VEVENT\n`;
+    icsContent += `SUMMARY:${event.title}\n`;
+    icsContent += `DESCRIPTION:${event.description}\n`;
+    icsContent += `DTSTART:${startDate}\n`;
+    icsContent += `DTEND:${endDate}\n`;
+    icsContent += `END:VEVENT\n`;
+  });
 
-    let blob = new Blob([icsContent], { type: "text/calendar" });
-    let url = URL.createObjectURL(blob);
-    let a = document.createElement("a");
-    a.href = url;
-    a.download = "events.ics";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  icsContent += `END:VCALENDAR`;
+
+  let blob = new Blob([icsContent], { type: "text/calendar" });
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "events.ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
-function addEventToGoogleCalendar(event) {
-    // let startDate = event.date.replace(/-/g, "") + "T" + event.time.replace(":", "") + "00Z";
-    let startDate = event.date + "T" + event.time + ":00";
-    let endDate = startDate; 
+// async function addEventToGoogleCalendar(event) {
+//     if (!googleApiReady) {
+//         ini
+//     }
+//     const calendarEvent = {
+//       summary: event.title,
+//       description: event.description,
+//       start: { dateTime: `${event.date}T${event.time}:00` },
+//       end: { dateTime: `${event.date}T${event.time}:00` },
+//     };
+  
+//     try {
+//       let response = await gapi.client.calendar.events.insert({
+//         calendarId: "primary",
+//         resource: calendarEvent,
+//       });
+//       console.log("Evento agregado a Google Calendar:", response);
+//     } catch (error) {
+//       console.error("Error al agregar evento a Google Calendar:", error);
+//     }
+//   }
+  
 
-    let googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE`;
-    googleCalendarUrl += `&text=${encodeURIComponent(event.title)}`;
-    googleCalendarUrl += `&dates=${startDate}/${endDate}`;
-    googleCalendarUrl += `&details=${encodeURIComponent(event.description)}`;
-    googleCalendarUrl += `&sf=true&output=xml`;
 
-    window.open(googleCalendarUrl, "_blank"); 
-}
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("exportICal").addEventListener("click", exportToICal);
-    document.getElementById("syncGoogle").addEventListener("click", addEventToGoogleCalendar);
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//   document.getElementById("exportICal").addEventListener("click", exportToICal);
+//   document
+//     .getElementById("syncGoogle")
+//     .addEventListener("click", addEventToGoogleCalendar);
+// });
