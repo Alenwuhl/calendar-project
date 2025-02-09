@@ -19,8 +19,6 @@ function getEventsFromStorage() {
 
 // Save event to local storage
 function saveEventToStorage(event) {
-    console.log("event: ", event);
-    
     let events = getEventsFromStorage();
     events.push(event);
     localStorage.setItem("events", JSON.stringify(events));

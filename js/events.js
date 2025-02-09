@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const date = `${year}-${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
-    console.log("-----date (cleaned): ", date);
 
     if (!title || !time) {
       alert("Title and time are required!");
@@ -62,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       time,
       date,
     };
-    console.log("new event: ", newEvent);
 
     saveEventToStorage(newEvent);
     bootstrap.Modal.getInstance(document.getElementById("eventModal")).hide();

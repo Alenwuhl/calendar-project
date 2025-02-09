@@ -147,8 +147,6 @@ async function getJaguim(year) {
 
       // save events in localStorage
       localStorage.setItem("events", JSON.stringify(events));
-
-      console.log("Jaguim guardados en localStorage:", events);
       return jaguim;
   } catch (error) {
       console.error("Error fetching Jewish holidays:", error);

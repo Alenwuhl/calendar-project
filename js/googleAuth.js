@@ -31,10 +31,9 @@ function gisLoaded() {
     scope: SCOPES,
     callback: (resp) => {
       if (resp.error) {
-        console.error("❌ Error en la autenticación:", resp);
+        console.error("Auth error:", resp);
         return;
       }
-      console.log("✅ Token recibido:", resp.access_token);
       localStorage.setItem("google_access_token", resp.access_token);
       gapi.client.setToken({ access_token: resp.access_token }); // Asigna el token a gapi
     },
@@ -46,12 +45,10 @@ async function handleAuthClick() {
   return new Promise((resolve, reject) => {
     tokenClient.callback = (resp) => {
       if (resp.error !== undefined) {
-        console.error("❌ Error en la autenticación:", resp);
+        console.error("Auth error:", resp);
         reject(resp.error);
         return;
       }
-
-      console.log("✅ Token recibido:", resp.access_token);
       localStorage.setItem("google_access_token", resp.access_token);
       gapi.client.setToken({ access_token: resp.access_token });
       resolve(resp.access_token); // Resolvemos la promesa con el token
@@ -92,15 +89,13 @@ async function listUpcomingEvents() {
     };
     response = await gapi.client.calendar.events.list(request);
   } catch (err) {
-    console.error("Error al obtener los eventos:", err);
-    document.getElementById("content").innerText =
-      "No se pudieron cargar los eventos.";
+    console.error("error getting the events:", err);
     return;
   }
 
   const events = response.result.items;
   if (!events || events.length == 0) {
-    document.getElementById("content").innerText = "No se encontraron eventos.";
+    document.getElementById("content").innerText = "events not found.";
     return;
   }
 
@@ -119,23 +114,22 @@ const addEventToGoogleCalendar = async (event) => {
 
   if (!token) {
     console.warn(
-      "⚠ No hay un Access Token válido. Intentando obtener uno nuevo..."
+      "No access token found. Trying to authenticate with Google..."
     );
     await handleAuthClick(); // try to authenticate
     token = localStorage.getItem("google_access_token");
     if (!token) {
       console.error(
-        "No se pudo obtener un token de acceso después de la autenticación."
+        "Could not authenticate with Google. Try again later."
       );
-      alert("No se pudo autenticar con Google. Intenta nuevamente.");
+      alert("Could not authenticate with Google. Try again later.");
       return;
     }
   }
 
   const eventDateTime = `${event.date}T${event.time}:00`;
-  const timeZone = "Asia/Jerusalem"; // 🇮🇱 Zona horaria de Israel
+  const timeZone = "Asia/Jerusalem"; 
 
-  // 📅 Crear evento con datos dinámicos
   var calendarEvent = {
     summary: event.title,
     location: "Google Meet",
@@ -148,12 +142,12 @@ const addEventToGoogleCalendar = async (event) => {
       dateTime: `${event.date}T${addOneHour(event.time)}`,
       timeZone: timeZone,
     },
-    attendees: [], // Se puede llenar con correos si es necesario
+    attendees: [],
     reminders: {
       useDefault: false,
       overrides: [
-        { method: "email", minutes: 1440 }, // 24 horas antes
-        { method: "popup", minutes: 10 }, // 10 minutos antes
+        { method: "email", minutes: 1440 }, 
+        { method: "popup", minutes: 10 },
       ],
     },
   };
@@ -162,7 +156,6 @@ const addEventToGoogleCalendar = async (event) => {
     gapi.client.setApiKey(null); // remove the API key of the link
 
     gapi.client.setToken({ access_token: token });
-    console.log("token: ", token);
     const reqData = {
       calendarId: "primary",
       resource: calendarEvent,
@@ -171,7 +164,7 @@ const addEventToGoogleCalendar = async (event) => {
     const request = await gapi.client.calendar.events.insert(reqData);
 
     const calendarEventLink = request.result.htmlLink;
-    console.log("Evento agregado a Google Calendar:", calendarEventLink);
+    console.log("Event added successfully:", calendarEventLink);
     alert("✅ Event added to your Google Calendar!");
   } catch (error) {
     console.error("Error al agregar el evento:", error);

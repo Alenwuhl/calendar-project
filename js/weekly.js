@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let today = new Date();
 
     let storedEvents = getEventsFromStorage();
-    console.log("stored events: ", storedEvents);
     
 
     for (let i = 0; i < 7; i++) {
@@ -107,8 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       dayColumn.appendChild(eventContainer);
-      console.log("dayColumn: ", dayColumn);
-      console.log("eventContainer: ", eventContainer);
       weekDaysContainer.appendChild(dayColumn);
     }
   }
