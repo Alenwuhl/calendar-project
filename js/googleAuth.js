@@ -216,9 +216,10 @@ const addEventToGoogleCalendar = async (event) => {
         Authorization: `Bearer ${token}`.trim(), // access token
       },
     }
+    console.log("request: ", reqData);
 
     const request = await gapi.client.calendar.events.insert(reqData);
-    console.log("request: ", reqData);
+
 
     const calendarEventLink = request.result.htmlLink;
     console.log("Evento agregado a Google Calendar:", calendarEventLink);
