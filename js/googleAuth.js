@@ -108,18 +108,82 @@ async function listUpcomingEvents() {
 }
 
 // add an event to the Google Calendar
-const addEventToGoogleCalendar = async () => {
+// const addEventToGoogleCalendar = async () => {
+//   let token = localStorage.getItem("google_access_token");
+
+//   if (!token) {
+//     console.warn(
+//       "⚠ No hay un Access Token válido. Intentando obtener uno nuevo..."
+//     );
+//     await handleAuthClick(); // Intentar autenticar
+//     token = localStorage.getItem("google_access_token");
+//   }
+
+//   const calendarEvent = {
+//     summary: "Event title",
+//     location: "Google Meet",
+//     description: "Event description",
+//     start: {
+//       dateTime: "2021-09-01T09:00:00-07:00",
+//       timeZone: "America/Los_Angeles",
+//     },
+//     end: {
+//       dateTime: "2021-09-01T17:00:00-07:00",
+//       timeZone: "America/Los_Angeles",
+//     },
+//     recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
+//     attendees: [{ email: "abc@google.com" }, { email: "xyz@google.com" }],
+//     reminders: {
+//       useDefault: false,
+//       overrides: [
+//         { method: "email", minutes: 1440 },
+//         { method: "popup", minutes: 10 },
+//       ],
+//     },
+//   };
+
+//   try {
+//     const response = await fetch(
+//       "https://content.googleapis.com/calendar/v3/calendars/primary/events",
+//       {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(calendarEvent),
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const result = await response.json();
+//     console.log("Evento agregado a Google Calendar:", result.htmlLink);
+
+//     document.getElementById(
+//       "content"
+//     ).innerText = `Evento agregado: ${result.htmlLink}`;
+//   } catch (error) {
+//     console.error("Error al agregar el evento:", error);
+//     document.getElementById("content").innerText =
+//       "Error al agregar el evento.";
+//   }
+// };
+// add an event to the Google Calendar
+const addEventToGoogleCalendar = async (event) => {
   let token = localStorage.getItem("google_access_token");
 
   if (!token) {
     console.warn(
       "⚠ No hay un Access Token válido. Intentando obtener uno nuevo..."
     );
-    await handleAuthClick(); // Intentar autenticar
+    await handleAuthClick(); // try to authenticate
     token = localStorage.getItem("google_access_token");
   }
 
-  const calendarEvent = {
+  var calendarEvent = {
     summary: "Event title",
     location: "Google Meet",
     description: "Event description",
@@ -143,88 +207,26 @@ const addEventToGoogleCalendar = async () => {
   };
 
   try {
-    const response = await fetch(
-      "https://content.googleapis.com/calendar/v3/calendars/primary/events",
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(calendarEvent),
-      }
-    );
+    gapi.client.setApiKey(null); // Elimina la apikey si está presente
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    const request = await gapi.client.calendar.events.insert({
+      calendarId: "primary",
+      resource: calendarEvent,
+      headers: {
+        Authorization: `Bearer ${token}`, // access token
+      },
+    });
+    console.log("request: ", request);
 
-    const result = await response.json();
-    console.log("Evento agregado a Google Calendar:", result.htmlLink);
+    const calendarEventLink = request.result.htmlLink;
+    console.log("Evento agregado a Google Calendar:", calendarEventLink);
 
     document.getElementById(
       "content"
-    ).innerText = `Evento agregado: ${result.htmlLink}`;
+    ).innerText = `Evento agregado: ${calendarEventLink}`;
   } catch (error) {
     console.error("Error al agregar el evento:", error);
     document.getElementById("content").innerText =
       "Error al agregar el evento.";
   }
 };
-// add an event to the Google Calendar
-// const addEventToGoogleCalendar = async (event) => {
-//   let token = localStorage.getItem("google_access_token");
-
-//   if (!token) {
-//     console.warn(
-//       "⚠ No hay un Access Token válido. Intentando obtener uno nuevo..."
-//     );
-//     await handleAuthClick(); // try to authenticate
-//     token = localStorage.getItem("google_access_token");
-//   }
-
-//   var calendarEvent = {
-//     "summary": "Event title",
-//     "location": "Google Meet",
-//     "description": "Event description",
-//     "start": {
-//       "dateTime": "2021-09-01T09:00:00-07:00",
-//       "timeZone": "America/Los_Angeles"
-//     },
-//     "end": {
-//       "dateTime": "2021-09-01T17:00:00-07:00",
-//       "timeZone": "America/Los_Angeles"
-//     },
-//     "recurrence": ["RRULE:FREQ=DAILY;COUNT=2"],
-//     "attendees": [{ "email": "abc@google.com" }, { "email": "xyz@google.com" }],
-//     "reminders": {
-//       "useDefault": false,
-//       "overrides": [
-//         { "method": "email", "minutes": 1440 },
-//         { "method": "popup", "minutes": 10 }
-//       ]
-//     }
-//   }
-
-// try {
-//   const request = await gapi.client.calendar.events.insert({
-//     calendarId: "primary",
-//     resource: calendarEvent,
-//     headers: {
-//       Authorization: `Bearer ${token}`, // access token
-//     },
-//   });
-//   console.log('request: ', request);
-
-//   const calendarEventLink = request.result.htmlLink;
-//   console.log("Evento agregado a Google Calendar:", calendarEventLink);
-
-//   document.getElementById(
-//     "content"
-//   ).innerText = `Evento agregado: ${calendarEventLink}`;
-// } catch (error) {
-//   console.error("Error al agregar el evento:", error);
-//   document.getElementById("content").innerText =
-//     "Error al agregar el evento.";
-// }
