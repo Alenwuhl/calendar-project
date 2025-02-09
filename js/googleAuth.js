@@ -125,9 +125,9 @@ const addEventToGoogleCalendar = async (event) => {
     token = localStorage.getItem("google_access_token");
     if (!token) {
       console.error(
-        "❌ No se pudo obtener un token de acceso después de la autenticación."
+        "No se pudo obtener un token de acceso después de la autenticación."
       );
-      alert("❌ No se pudo autenticar con Google. Intenta nuevamente.");
+      alert("No se pudo autenticar con Google. Intenta nuevamente.");
       return;
     }
   }
