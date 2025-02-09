@@ -43,21 +43,27 @@ function gisLoaded() {
 
 // Handle the auth in the click
 async function handleAuthClick() {
-  tokenClient.callback = async (resp) => {
-    if (resp.error !== undefined) {
-      throw resp;
-    }
-    localStorage.setItem("google_access_token", resp.access_token); // save the token
-    // await listUpcomingEvents();
-  };
+  return new Promise((resolve, reject) => {
+    tokenClient.callback = (resp) => {
+      if (resp.error !== undefined) {
+        console.error("❌ Error en la autenticación:", resp);
+        reject(resp.error);
+        return;
+      }
 
-  // if the token is not in the local storage, request auth
-  if (!localStorage.getItem("google_access_token")) {
-    tokenClient.requestAccessToken({ prompt: "consent" });
-  } else {
-    // if the token is in the local storage
-    tokenClient.requestAccessToken({ prompt: "" });
-  }
+      console.log("✅ Token recibido:", resp.access_token);
+      localStorage.setItem("google_access_token", resp.access_token);
+      gapi.client.setToken({ access_token: resp.access_token });
+      resolve(resp.access_token); // Resolvemos la promesa con el token
+    };
+
+    // Si el token no está en localStorage, solicitamos autenticación con Google
+    if (!localStorage.getItem("google_access_token")) {
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    } else {
+      tokenClient.requestAccessToken({ prompt: "" });
+    }
+  });
 }
 
 // manage the signout
@@ -118,7 +124,9 @@ const addEventToGoogleCalendar = async (event) => {
     await handleAuthClick(); // try to authenticate
     token = localStorage.getItem("google_access_token");
     if (!token) {
-      console.error("❌ No se pudo obtener un token de acceso después de la autenticación.");
+      console.error(
+        "❌ No se pudo obtener un token de acceso después de la autenticación."
+      );
       alert("❌ No se pudo autenticar con Google. Intenta nuevamente.");
       return;
     }
@@ -155,7 +163,7 @@ const addEventToGoogleCalendar = async (event) => {
     const reqData = {
       calendarId: "primary",
       resource: calendarEvent,
-    }
+    };
 
     const request = await gapi.client.calendar.events.insert(reqData);
 
