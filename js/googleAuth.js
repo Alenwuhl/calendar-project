@@ -132,25 +132,29 @@ const addEventToGoogleCalendar = async (event) => {
     }
   }
 
+  const eventDateTime = `${event.date}T${event.time}:00`;
+  const timeZone = "America/Los_Angeles"; // Se puede hacer dinámico si es necesario
+
+  // 📅 Crear evento con datos dinámicos
   var calendarEvent = {
-    summary: "Event title",
+    summary: event.title,
     location: "Google Meet",
-    description: "Event description",
+    description: event.description || "Sin descripción",
     start: {
-      dateTime: "2021-09-01T09:00:00-07:00",
-      timeZone: "America/Los_Angeles",
+      dateTime: eventDateTime,
+      timeZone: timeZone,
     },
     end: {
-      dateTime: "2021-09-01T17:00:00-07:00",
-      timeZone: "America/Los_Angeles",
+      dateTime: `${event.date}T${addOneHour(event.time)}`,
+      timeZone: timeZone,
     },
     recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
-    attendees: [{ email: "abc@google.com" }, { email: "xyz@google.com" }],
+    attendees: [], // Se puede llenar con correos si es necesario
     reminders: {
       useDefault: false,
       overrides: [
-        { method: "email", minutes: 1440 },
-        { method: "popup", minutes: 10 },
+        { method: "email", minutes: 1440 }, // 24 horas antes
+        { method: "popup", minutes: 10 },   // 10 minutos antes
       ],
     },
   };
