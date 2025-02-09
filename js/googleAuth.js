@@ -144,7 +144,7 @@ const addEventToGoogleCalendar = async () => {
 
   try {
     const response = await fetch(
-      "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+      "https://content.googleapis.com/calendar/v3/calendars/primary/events",
       {
         method: "POST",
         headers: {
