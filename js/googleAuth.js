@@ -117,6 +117,11 @@ const addEventToGoogleCalendar = async (event) => {
     );
     await handleAuthClick(); // try to authenticate
     token = localStorage.getItem("google_access_token");
+    if (!token) {
+      console.error("❌ No se pudo obtener un token de acceso después de la autenticación.");
+      alert("❌ No se pudo autenticar con Google. Intenta nuevamente.");
+      return;
+    }
   }
 
   var calendarEvent = {
@@ -156,7 +161,7 @@ const addEventToGoogleCalendar = async (event) => {
 
     const calendarEventLink = request.result.htmlLink;
     console.log("Evento agregado a Google Calendar:", calendarEventLink);
-    alert("✅ Evento agregado con éxito. Verifica tu Google Calendar.");
+    alert("✅ Event added to your Google Calendar!");
   } catch (error) {
     console.error("Error al agregar el evento:", error);
     document.getElementById("content").innerText =
