@@ -209,15 +209,16 @@ const addEventToGoogleCalendar = async (event) => {
   try {
     gapi.client.setApiKey(null); // Elimina la apikey si está presente
 
+    gapi.client.setToken({ access_token: token });
     console.log("token: ", token);
     const reqData = {
       calendarId: "primary",
       resource: calendarEvent,
-      headers: {
-        Authorization: `Bearer ya29.a0AXeO80QxG0vj8qbYnqboTSJ22cn8b_W0ZLThqVfdSPLCJONYI-tBC6H7ms7LTnABIIkT5TtvSmA3wPqaU_qToJQFPwTwqtHohQRMOqRzKAwc9Pbh18swvRj5Ai-3DmcuMwl80smD7_6Br-wadk2DqyZQIei8WkpiCcyHOFiuaCgYKARwSARASFQHGX2MidyR65RCO9xjNNHQUm8M_eQ0175`.trim(), // access token
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`, // access token
+      // },
     }
-    console.log("request: ", reqData);
+    console.log("token2: ", client.getToken());
 
     const request = await gapi.client.calendar.events.insert(reqData);
 
