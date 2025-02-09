@@ -133,7 +133,7 @@ const addEventToGoogleCalendar = async (event) => {
   }
 
   const eventDateTime = `${event.date}T${event.time}:00`;
-  const timeZone = "America/Los_Angeles"; // Se puede hacer dinámico si es necesario
+  const timeZone = "Asia/Jerusalem"; // 🇮🇱 Zona horaria de Israel
 
   // 📅 Crear evento con datos dinámicos
   var calendarEvent = {
@@ -154,7 +154,7 @@ const addEventToGoogleCalendar = async (event) => {
       useDefault: false,
       overrides: [
         { method: "email", minutes: 1440 }, // 24 horas antes
-        { method: "popup", minutes: 10 },   // 10 minutos antes
+        { method: "popup", minutes: 10 }, // 10 minutos antes
       ],
     },
   };
@@ -180,3 +180,9 @@ const addEventToGoogleCalendar = async (event) => {
       "Error al agregar el evento.";
   }
 };
+
+function addOneHour(time) {
+  let [hours, minutes] = time.split(":").map(Number);
+  hours = (hours + 1) % 24; // Para evitar que pase de 23
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:00`;
+}
