@@ -209,6 +209,7 @@ const addEventToGoogleCalendar = async (event) => {
   try {
     gapi.client.setApiKey(null); // Elimina la apikey si está presente
 
+    console.log("token: ", token);
     const reqData = {
       calendarId: "primary",
       resource: calendarEvent,
