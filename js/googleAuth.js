@@ -147,6 +147,7 @@ const addEventToGoogleCalendar = async () => {
       "https://content.googleapis.com/calendar/v3/calendars/primary/events",
       {
         method: "POST",
+        mode: "no-cors",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
