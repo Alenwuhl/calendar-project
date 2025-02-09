@@ -148,7 +148,6 @@ const addEventToGoogleCalendar = async (event) => {
       dateTime: `${event.date}T${addOneHour(event.time)}`,
       timeZone: timeZone,
     },
-    recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
     attendees: [], // Se puede llenar con correos si es necesario
     reminders: {
       useDefault: false,
