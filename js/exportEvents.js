@@ -32,3 +32,4 @@ function exportToICal() {
   a.click();
   document.body.removeChild(a);
 }
+

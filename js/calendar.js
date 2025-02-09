@@ -94,6 +94,7 @@ const renderCalendar = () => {
 document.addEventListener("DOMContentLoaded", async function () {
   const prevButton = document.getElementById("prev");
   const nextButton = document.getElementById("next");
+  const exportICalButton = document.getElementById("exportICal");
   const toggleWeeklyViewButton = document.getElementById(
     "toggleWeeklyViewButton"
   );
@@ -110,6 +111,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   nextButton.addEventListener("click", function () {
     currentDate.setMonth(currentDate.getMonth() + 1);
     renderCalendar();
+  });
+
+  exportICalButton.addEventListener("click", function () {
+    exportToICal();
   });
 
   toggleWeeklyViewButton.addEventListener("click", function () {
