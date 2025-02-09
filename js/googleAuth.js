@@ -214,7 +214,7 @@ const addEventToGoogleCalendar = async (event) => {
       calendarId: "primary",
       resource: calendarEvent,
       headers: {
-        Authorization: `Bearer ${token}`.trim(), // access token
+        Authorization: `Bearer ya29.a0AXeO80QxG0vj8qbYnqboTSJ22cn8b_W0ZLThqVfdSPLCJONYI-tBC6H7ms7LTnABIIkT5TtvSmA3wPqaU_qToJQFPwTwqtHohQRMOqRzKAwc9Pbh18swvRj5Ai-3DmcuMwl80smD7_6Br-wadk2DqyZQIei8WkpiCcyHOFiuaCgYKARwSARASFQHGX2MidyR65RCO9xjNNHQUm8M_eQ0175`.trim(), // access token
       },
     }
     console.log("request: ", reqData);
